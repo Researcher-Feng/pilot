@@ -43,6 +43,7 @@ python run.py
 - v4: 核心增强：补充更多的功能选择，如对话摘要
 - v5: 核心增强：可通过多轮对话实现初步效果，当前（2025.11.6）稳定版本
 
+```
 ./v5
 ├── function
 │   ├── agent_IO.py
@@ -310,3 +311,4 @@ python run.py
     │   └── __init__.cpython-312.pyc
     ├── sft_trainer.yaml
     └── visualization_tools.py
+```
