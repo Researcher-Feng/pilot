@@ -1,0 +1,182 @@
+2025-11-06 00:32:08,009 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO - data:
+  train_batch_size: 256
+  micro_batch_size: null
+  micro_batch_size_per_gpu: 4
+  train_files: ~/data/gsm8k/train.parquet
+  val_files: D:\DeepLearning\Code\LangChain\dataset/GSM8k_test_with_prompt4.parquet
+  prompt_key: extra_info
+  response_key: extra_info
+  prompt_dict_keys:
+  - question
+  response_dict_keys:
+  - answer
+  multiturn:
+    enable: false
+    messages_key: messages
+    tools_key: tools
+    enable_thinking_key: enable_thinking
+  max_length: 1024
+  truncation: error
+  balance_dp_token: false
+  chat_template: null
+  custom_cls:
+    path: null
+    name: null
+  use_shm: false
+  first_prompt: raw
+generate:
+  max_new_tokens: 1024
+model:
+  partial_pretrain: ~/models/gemma-1.1-7b-it
+  use_shm: false
+  fsdp_config:
+    model_dtype: fp32
+    wrap_policy:
+      min_num_params: 0
+    cpu_offload: false
+    offload_params: false
+  external_lib: null
+  enable_gradient_checkpointing: true
+  trust_remote_code: true
+  lora_rank: 8
+  lora_alpha: 16
+  lora_dropout=0.1: null
+  target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  use_liger: false
+  strategy: fsdp2
+  log_folder_path: D:\DeepLearning\Code\LangChain\log
+  api_name_student: deepseek-chat
+  model_type_student: api
+  base_url_student: http://localhost:11434
+  temperature_student: 0.2
+  max_tokens_student: 2000
+  api_name_teacher: deepseek-chat
+  model_type_teacher: api
+  base_url_teacher: http://localhost:11434
+  temperature_teacher: 0.2
+  max_tokens_teacher: 2000
+  api_name_expert: deepseek-chat
+  model_type_expert: api
+  base_url_expert: http://localhost:11434
+  temperature_expert: 0.2
+  max_tokens_expert: 2000
+  temperature_summary_model: 0.2
+  max_tokens_summary_model: 2000
+optim:
+  lr: 1.0e-05
+  betas:
+  - 0.9
+  - 0.95
+  weight_decay: 0.01
+  warmup_steps_ratio: 0.1
+  clip_grad: 1.0
+  lr_scheduler: cosine
+ulysses_sequence_parallel_size: 1
+use_remove_padding: false
+trainer:
+  default_local_dir: checkpoints/${trainer.project_name}/${trainer.experiment_name}
+  default_hdfs_dir: null
+  project_name: gsm8k-sft
+  experiment_name: test
+  total_epochs: 4
+  total_training_steps: null
+  logger:
+  - console
+  - wandb
+  seed: 1
+  save_freq: -1
+  test_freq: -1
+  nnodes: 2
+  n_gpus_per_node: 8
+  max_ckpt_to_keep: null
+  resume_mode: auto
+  resume_from_path: null
+  checkpoint:
+    save_contents:
+    - model
+    - optimizer
+    - extra
+    load_contents: ${trainer.checkpoint.save_contents}
+  device: cuda
+agent:
+  max_samples: 20
+  debug_samples: 2
+  debug_mode: false
+  use_solution_tree: false
+  evaluate_multi_solution: false
+  conversation_summary: false
+  summary_model_name: deepseek-chat
+  summary_model_type: api
+  summary_base_url: http://localhost:11434
+  summary_max_turns: 8
+  summary_max_tokens: 1500
+  max_turns: 3
+  explicit_interaction: true
+  parallel_thinking: true
+  socratic_teaching: false
+  student_sys_prompt: STUDENT_PROMPT_EASY
+  teacher_sys_prompt: TEACHER_PROMPT
+  teacher_tree_sys_prompt: TEACHER_WITH_TREE_PROMPT
+  student_tree_sys_prompt: STUDENT_WITH_TREE_PROMPT
+  expert_sys_prompt: EXPERT_STUDENT_PROMPT
+  use_cognitive_state: false
+  carelessness_level: 6
+  math_background: None
+  response_style: thoughtful
+  preferred_method: algebraic
+  learning_style: visual
+
+2025-11-06 00:32:38,397 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO - ✅ 对话摘要功能已禁用
+2025-11-06 00:32:38,397 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO - ✅ Multi-agent system initialized successfully!
+2025-11-06 00:32:38,397 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO -    Student: deepseek-chat
+2025-11-06 00:32:38,406 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO -    Teacher: deepseek-chat
+2025-11-06 00:32:38,406 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO -    Expert: Disabled
+2025-11-06 00:32:38,406 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO -    Cognitive State: Disabled
+2025-11-06 00:32:38,407 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO -    Solution Tree: Disabled
+2025-11-06 00:32:38,407 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO -    Mode: Explicit Interaction
+2025-11-06 00:32:38,407 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO -    Parallel Thinking: True
+2025-11-06 00:32:38,407 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO -    Socratic Teaching: False
+2025-11-06 00:32:38,408 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ Janet’s ducks lay 16 eggs per day. She eats three for breakfast every morning and bakes muffins for her friends every day with four. She sells the remainder at the farmers' market daily for $2 per fresh duck egg. How much in dollars does she make every day at the farmers' market?
+2025-11-06 00:32:38,408 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO - ==================================================
+2025-11-06 00:32:51,741 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - INFO - 👨‍🎓 学生 [轮次1]: Let me solve this problem using parallel thinking:
+
+**Multi-angle analysis:**
+
+**Angle 1: Daily egg flow analysis**
+- Total eggs laid per day: 16
+- Eggs consumed for breakfast: 3
+- Eggs used for muffins: 4
+- Eggs remaining for sale = 16 - 3 - 4 = 9 eggs
+- Daily income = 9 × $2 = $18
+
+**Angle 2: Sequential subtraction approach**
+- Start with 16 eggs
+- After breakfast: 16 - 3 = 13 eggs left
+- After muffins: 13 - 4 = 9 eggs left
+- Market sales: 9 × $2 = $18
+
+**Angle 3: Algebraic approach**
+Let x = eggs sold at market
+x = 16 - 3 - 4 = 9
+Income = 9 × 2 = $18
+
+**Hypothesis testing:**
+- If she sold all 16 eggs: 16 × $2 = $32 (too high - doesn't account for consumption)
+- If she only sold after breakfast: (16-3) × $2 = $26 (too high - doesn't account for muffins)
+- Our calculation of $18 accounts for both deductions
+
+**Solution comparison:**
+All three approaches yield the same result: $18
+
+**Comprehensive judgment:**
+The daily egg flow analysis is most intuitive and clearly shows the step-by-step process.
+
+**Final answer:**
+\boxed{18}
+2025-11-06 00:34:47,980 - D:\DeepLearning\Code\LangChain\v5\utils\evaluator.py - ERROR - ❌ 对话过程中出现错误: 'question'

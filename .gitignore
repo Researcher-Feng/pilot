@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 密钥文件
+config_secret/
+
+# 日志文件
+*.log"config_secret/" 
+"env/" 

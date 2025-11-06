@@ -1,0 +1,99 @@
+# 方法1：使用内置的摘要Memory
+
+from langchain.memory import ConversationSummaryMemory
+from langchain_ollama import ChatOllama
+
+# 创建带摘要的memory
+memory = ConversationSummaryMemory(
+    llm=ChatOllama(model="qwen2.5:1.5b"),
+    return_messages=True,
+    memory_key="chat_history"
+)
+
+# 在chain中使用
+from langchain.chains import ConversationChain
+chain = ConversationChain(
+    llm=model,
+    memory=memory,
+    verbose=True
+)
+
+# 当对话轮次过多时，会自动生成摘要
+for i in range(20):
+    response = chain.invoke({"input": f"这是第{i}轮对话..."})
+
+
+
+
+
+
+
+# 方法2：自定义摘要策略
+
+from langchain.memory import ConversationBufferWindowMemory
+from langchain_core.prompts import PromptTemplate
+
+class SmartSummaryMemory:
+    def __init__(self, llm, max_turns=10):
+        self.buffer_memory = ConversationBufferWindowMemory(k=max_turns)
+        self.summary_memory = ConversationSummaryMemory(llm=llm)
+        self.turn_count = 0
+        
+    def create_summary_if_needed(self):
+        if self.turn_count >= 10:  # 每10轮生成一次摘要
+            buffer_history = self.buffer_memory.load_memory_variables({})
+            summary_prompt = f"请总结以下对话的核心内容：{buffer_history}"
+            # 调用LLM生成摘要
+            summary = self.llm.invoke(summary_prompt)
+            self.summary_memory.save_context({"input": "摘要"}, {"output": summary})
+            self.buffer_memory.clear()
+            self.turn_count = 0
+
+
+
+
+
+
+# 方法3：基于Token长度的摘要
+
+from langchain.memory import ConversationTokenBufferMemory
+
+# 基于token数量自动摘要
+memory = ConversationTokenBufferMemory(
+    llm=model,
+    max_token_limit=1000,  # 超过1000token自动摘要
+    return_messages=True
+)
+
+
+
+
+
+
+
+# 方法4：引入上下文与滑动窗口策略
+
+class ContextManager:
+    def __init__(self, max_context_length=4000):
+        self.max_context_length = max_context_length
+        self.conversation_history = []
+        
+    def manage_context(self, new_message, current_context):
+        """智能管理上下文长度"""
+        estimated_tokens = self.estimate_tokens(current_context + new_message)
+        
+        if estimated_tokens > self.max_context_length:
+            # 策略1: 摘要长对话
+            if len(self.conversation_history) > 5:
+                return self.summarize_and_compress()
+            # 策略2: 滑动窗口
+            else:
+                return self.sliding_window_approach()
+        else:
+            return current_context + new_message
+    
+    def sliding_window_approach(self, keep_recent=3, keep_important=2):
+        """滑动窗口保留最重要的对话"""
+        recent = self.conversation_history[-keep_recent:]
+        important = self.identify_important_messages()[:keep_important]
+        return recent + important
