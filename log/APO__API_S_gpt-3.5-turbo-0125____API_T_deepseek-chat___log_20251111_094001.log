@@ -1,0 +1,570 @@
+2025-11-11 09:40:01,683 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - data:
+  train_batch_size: 256
+  micro_batch_size: null
+  micro_batch_size_per_gpu: 4
+  train_files: ~/data/gsm8k/train.parquet
+  val_files: D:\DeepLearning\Code\LangChain\dataset/APO_combine_with_source_test_without_path_3.parquet
+  prompt_key: extra_info
+  response_key: extra_info
+  prompt_dict_keys:
+  - question
+  response_dict_keys:
+  - answer
+  multiturn:
+    enable: false
+    messages_key: messages
+    tools_key: tools
+    enable_thinking_key: enable_thinking
+  max_length: 1024
+  truncation: error
+  balance_dp_token: false
+  chat_template: null
+  custom_cls:
+    path: null
+    name: null
+  use_shm: false
+  raw_problem_key: extra_info
+  first_prompt: raw
+  raw_problem_dict_keys:
+  - raw_problem
+generate:
+  max_new_tokens: 1024
+model:
+  partial_pretrain: ~/models/gemma-1.1-7b-it
+  use_shm: false
+  fsdp_config:
+    model_dtype: fp32
+    wrap_policy:
+      min_num_params: 0
+    cpu_offload: false
+    offload_params: false
+  external_lib: null
+  enable_gradient_checkpointing: true
+  trust_remote_code: true
+  lora_rank: 8
+  lora_alpha: 16
+  lora_dropout=0.1: null
+  target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  use_liger: false
+  strategy: fsdp2
+  log_folder_path: D:\DeepLearning\Code\LangChain\log
+  api_name_student: gpt-3.5-turbo-0125
+  model_type_student: api
+  base_url_student: https://api.apiyi.com/v1
+  api_student_key: sk-gB3t5nNqRHAxDjXA9f5a2628AeB44aB7AeE98729B5A1D44d
+  temperature_student: 0.7
+  max_tokens_student: 4000
+  api_name_teacher: deepseek-chat
+  model_type_teacher: api
+  base_url_teacher: https://api.deepseek.com
+  api_teacher_key: sk-063cb38f7e514551a4c4e3dbbeddfe93
+  temperature_teacher: 0.2
+  max_tokens_teacher: 8000
+  api_name_expert: deepseek-chat
+  model_type_expert: api
+  base_url_expert: https://api.deepseek.com
+  temperature_expert: 0
+  max_tokens_expert: 2000
+  temperature_summary_model: 0
+  max_tokens_summary_model: 8000
+optim:
+  lr: 1.0e-05
+  betas:
+  - 0.9
+  - 0.95
+  weight_decay: 0.01
+  warmup_steps_ratio: 0.1
+  clip_grad: 1.0
+  lr_scheduler: cosine
+ulysses_sequence_parallel_size: 1
+use_remove_padding: false
+trainer:
+  default_local_dir: checkpoints/${trainer.project_name}/${trainer.experiment_name}
+  default_hdfs_dir: null
+  project_name: gsm8k-sft
+  experiment_name: test
+  total_epochs: 4
+  total_training_steps: null
+  logger:
+  - console
+  - wandb
+  seed: 1
+  save_freq: -1
+  test_freq: -1
+  nnodes: 2
+  n_gpus_per_node: 8
+  max_ckpt_to_keep: null
+  resume_mode: auto
+  resume_from_path: null
+  checkpoint:
+    save_contents:
+    - model
+    - optimizer
+    - extra
+    load_contents: ${trainer.checkpoint.save_contents}
+  device: cuda
+agent:
+  max_samples: 30
+  debug_samples: 10
+  debug_mode: false
+  max_turns: 5
+  use_solution_tree: false
+  evaluate_multi_solution: false
+  conversation_summary: true
+  summary_model_name: deepseek-chat
+  summary_model_type: api
+  summary_base_url: https://api.deepseek.com
+  summary_api_key: sk-063cb38f7e514551a4c4e3dbbeddfe93
+  summary_max_turns: 4
+  summary_max_tokens: 1500
+  explicit_interaction: true
+  parallel_thinking: false
+  socratic_teaching: false
+  student_sys_prompt: STUDENT_PROMPT_EASY_MISTAKE
+  teacher_response: TEACHER_RESPONSE_TEACHING
+  student_response: STUDENT_RESPONSE_STUDYING_SOLVING
+  teacher_sys_prompt: TEACHER_PROMPT_EASY
+  teacher_tree_sys_prompt: TEACHER_WITH_TREE_PROMPT
+  student_tree_sys_prompt: STUDENT_WITH_TREE_PROMPT
+  expert_sys_prompt: EXPERT_STUDENT_PROMPT
+  use_cognitive_state: false
+  carelessness_level: 9
+  math_background: beginner
+  response_style: brief
+  preferred_method: algebraic
+  learning_style: reading-writing
+
+2025-11-11 09:40:05,296 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ✅ Summary model: deepseek-chat (api)
+2025-11-11 09:40:05,297 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ✅ Conversation summary enabled for student agent
+2025-11-11 09:40:05,297 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ✅ Conversation summary enabled for teacher agent
+2025-11-11 09:40:05,297 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ✅ 对话摘要功能已启用 (max_turns: 4)
+2025-11-11 09:40:05,298 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ✅ Multi-agent system initialized successfully!
+2025-11-11 09:40:05,298 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Student: gpt-3.5-turbo-0125
+2025-11-11 09:40:05,298 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Teacher: deepseek-chat
+2025-11-11 09:40:05,298 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Expert: Disabled
+2025-11-11 09:40:05,299 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Cognitive State: Disabled
+2025-11-11 09:40:05,299 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Solution Tree: Disabled
+2025-11-11 09:40:05,299 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Mode: Explicit Interaction
+2025-11-11 09:40:05,299 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Parallel Thinking: False
+2025-11-11 09:40:05,299 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Socratic Teaching: False
+2025-11-11 09:40:05,304 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ Find the sum of all integer bases $b>9$ for which $17_b$ is a divisor of $97_b.$
+2025-11-11 09:40:05,304 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ==================================================
+2025-11-11 09:40:05,304 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入学生摘要内存
+2025-11-11 09:40:05,306 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入教师摘要内存
+2025-11-11 09:40:05,306 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - ERROR - ❌ 对话过程中出现错误: can only concatenate str (not "list") to str
+2025-11-11 09:40:05,307 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 1/30:
+2025-11-11 09:40:05,307 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,307 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,307 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,307 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,307 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,307 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,308 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,308 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,308 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,309 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ In $\triangle ABC$ points $D$ and $E$ lie on $\overline{AB}$ so that $AD < AE < AB$, while points $F$ and $G$ lie on $\overline{AC}$ so that $AF < AG < AC$. Suppose $AD = 4$, $DE = 16$, $EB = 8$, $AF = 13$, $FG = 52$, and $GC = 26$. Let $M$ be the reflection of $D$ through $F$, and let $N$ be the reflection of $G$ through $E$. The area of quadrilateral $DEGF$ is $288$. Find the area of heptagon $AFNBCEM$.
+2025-11-11 09:40:05,309 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ==================================================
+2025-11-11 09:40:05,309 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入学生摘要内存
+2025-11-11 09:40:05,309 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入教师摘要内存
+2025-11-11 09:40:05,309 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - ERROR - ❌ 对话过程中出现错误: can only concatenate str (not "list") to str
+2025-11-11 09:40:05,310 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 2/30:
+2025-11-11 09:40:05,310 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,310 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,310 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,310 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,310 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,311 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,311 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,311 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,311 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,312 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ The $9$ members of a baseball team went to an ice-cream parlor after their game. Each player had a single scoop cone of chocolate, vanilla, or strawberry ice cream. At least one player chose each flavor, and the number of players who chose chocolate was greater than the number of players who chose vanilla, which was greater than the number of players who chose strawberry. Let $N$ be the number of different assignments of flavors to players that meet these conditions. Find the remainder when $N$ is divided by $1000.$
+2025-11-11 09:40:05,312 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ==================================================
+2025-11-11 09:40:05,312 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入学生摘要内存
+2025-11-11 09:40:05,312 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入教师摘要内存
+2025-11-11 09:40:05,312 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - ERROR - ❌ 对话过程中出现错误: can only concatenate str (not "list") to str
+2025-11-11 09:40:05,313 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 3/30:
+2025-11-11 09:40:05,313 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,313 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,313 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,313 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,313 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,314 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,314 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,314 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,314 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,315 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ Find the number of ordered pairs $(x,y)$, where both $x$ and $y$ are integers between $-100$ and $100$ inclusive, such that $12x^2-xy-6y^2=0$.
+2025-11-11 09:40:05,315 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ==================================================
+2025-11-11 09:40:05,315 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入学生摘要内存
+2025-11-11 09:40:05,315 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入教师摘要内存
+2025-11-11 09:40:05,316 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - ERROR - ❌ 对话过程中出现错误: can only concatenate str (not "list") to str
+2025-11-11 09:40:05,316 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 4/30:
+2025-11-11 09:40:05,316 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,316 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,316 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,317 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,317 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,317 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,317 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,317 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,317 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,318 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ There are $8!= 40320$ eight-digit positive integers that use each of the digits $1, 2, 3, 4, 5, 6, 7, 8$ exactly once. Let $N$ be the number of these integers that are divisible by $22$. Find the difference between $N$ and $2025$.$
+2025-11-11 09:40:05,318 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ==================================================
+2025-11-11 09:40:05,318 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入学生摘要内存
+2025-11-11 09:40:05,318 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入教师摘要内存
+2025-11-11 09:40:05,318 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - ERROR - ❌ 对话过程中出现错误: can only concatenate str (not "list") to str
+2025-11-11 09:40:05,319 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 5/30:
+2025-11-11 09:40:05,319 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,319 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,319 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,319 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,319 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,320 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,320 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,320 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,320 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,321 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ An isosceles trapezoid has an inscribed circle tangent to each of its four sides. The radius of the circle is $3$, and the area of the trapezoid is $72$. Let the parallel sides of the trapezoid have lengths $r$ and $s$, with $r \neq s$. Find $r^2+s^2$
+2025-11-11 09:40:05,321 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ==================================================
+2025-11-11 09:40:05,321 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入学生摘要内存
+2025-11-11 09:40:05,321 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入教师摘要内存
+2025-11-11 09:40:05,321 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - ERROR - ❌ 对话过程中出现错误: can only concatenate str (not "list") to str
+2025-11-11 09:40:05,322 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 6/30:
+2025-11-11 09:40:05,322 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,322 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,322 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,322 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,322 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,323 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,323 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,323 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,323 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,324 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ The twelve letters $A$,$B$,$C$,$D$,$E$,$F$,$G$,$H$,$I$,$J$,$K$, and $L$ are randomly grouped into six pairs of letters. The two letters in each pair are placed next to each other in alphabetical order to form six two-letter words, and then those six words are listed alphabetically. For example, a possible result is $AB$, $CJ$, $DG$, $EK$, $FL$, $HI$. The probability that the last word listed contains $G$ is $\frac mn$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.
+2025-11-11 09:40:05,324 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ==================================================
+2025-11-11 09:40:05,324 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入学生摘要内存
+2025-11-11 09:40:05,324 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入教师摘要内存
+2025-11-11 09:40:05,324 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - ERROR - ❌ 对话过程中出现错误: can only concatenate str (not "list") to str
+2025-11-11 09:40:05,325 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 7/30:
+2025-11-11 09:40:05,325 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,325 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,325 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,325 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,325 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,326 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,326 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,326 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,326 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,327 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ Let $k$ be a real number such that the system \begin{align*} &|25 + 20i - z| = 5 \ &|z - 4 - k| = |z - 3i - k| \end{align*} has exactly one complex solution $z$. The sum of all possible values of $k$ can be written as $\frac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m + n$. Here $i = \sqrt{-1}$.$
+2025-11-11 09:40:05,327 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ==================================================
+2025-11-11 09:40:05,327 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入学生摘要内存
+2025-11-11 09:40:05,327 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入教师摘要内存
+2025-11-11 09:40:05,327 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - ERROR - ❌ 对话过程中出现错误: can only concatenate str (not "list") to str
+2025-11-11 09:40:05,328 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 8/30:
+2025-11-11 09:40:05,328 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,328 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,328 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,328 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,329 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,329 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,329 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,329 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,329 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,330 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ The parabola with equation $y = x^2 - 4$ is rotated $60^\circ$ counterclockwise around the origin. The unique point in the fourth quadrant where the original parabola and its image intersect has $y$-coordinate $\frac{a - \sqrt{b}}{c}$, where $a$, $b$, and $c$ are positive integers, and $a$ and $c$ are relatively prime. Find $a + b + c$.
+2025-11-11 09:40:05,330 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ==================================================
+2025-11-11 09:40:05,330 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入学生摘要内存
+2025-11-11 09:40:05,330 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入教师摘要内存
+2025-11-11 09:40:05,330 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - ERROR - ❌ 对话过程中出现错误: can only concatenate str (not "list") to str
+2025-11-11 09:40:05,331 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 9/30:
+2025-11-11 09:40:05,331 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,331 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,331 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,331 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,331 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,332 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,332 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,332 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,332 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,332 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ The $27$ cells of a $3 \times 9$ grid are filled in using the numbers $1$ through $9$ so that each row contains $9$ different numbers, and each of the three $3 \times 3$ blocks heavily outlined in the example below contains $9$ different numbers, as in the first three rows of a Sudoku puzzle. [asy] unitsize(20);  add(grid(9,3));  draw((0,0)--(9,0)--(9,3)--(0,3)--cycle, linewidth(2)); draw((3,0)--(3,3), linewidth(2)); draw((6,0)--(6,3), linewidth(2));  real a = 0.5;  label("5",(a,a)); label("6",(1+a,a)); label("1",(2+a,a)); label("8",(3+a,a)); label("4",(4+a,a)); label("7",(5+a,a)); label("9",(6+a,a)); label("2",(7+a,a)); label("3",(8+a,a));  label("3",(a,1+a)); label("7",(1+a,1+a)); label("9",(2+a,1+a)); label("5",(3+a,1+a)); label("2",(4+a,1+a)); label("1",(5+a,1+a)); label("6",(6+a,1+a)); label("8",(7+a,1+a)); label("4",(8+a,1+a));  label("4",(a,2+a)); label("2",(1+a,2+a)); label("8",(2+a,2+a)); label("9",(3+a,2+a)); label("6",(4+a,2+a)); label("3",(5+a,2+a)); label("1",(6+a,2+a)); label("7",(7+a,2+a)); label("5",(8+a,2+a));  [/asy] The number of different ways to fill such a grid can be written as $p^a \cdot q^b \cdot r^c \cdot s^d$ where $p$, $q$, $r$, and $s$ are distinct prime numbers and $a$, $b$, $c$, $d$ are positive integers. Find $p \cdot a + q \cdot b + r \cdot c + s \cdot d$.
+2025-11-11 09:40:05,333 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - ==================================================
+2025-11-11 09:40:05,333 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入学生摘要内存
+2025-11-11 09:40:05,333 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🗂 已将初始问题加入教师摘要内存
+2025-11-11 09:40:05,333 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - ERROR - ❌ 对话过程中出现错误: can only concatenate str (not "list") to str
+2025-11-11 09:40:05,334 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 10/30:
+2025-11-11 09:40:05,334 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,334 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,334 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,334 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,334 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,334 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,334 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,335 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,335 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,336 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 11/30:
+2025-11-11 09:40:05,336 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,336 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,336 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,336 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,336 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,337 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,337 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,337 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,337 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,338 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 12/30:
+2025-11-11 09:40:05,339 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,339 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,339 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,339 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,339 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,339 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,339 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,339 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,340 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,340 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 13/30:
+2025-11-11 09:40:05,341 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,341 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,341 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,341 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,341 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,341 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,341 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,342 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,342 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,343 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 14/30:
+2025-11-11 09:40:05,343 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,343 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,343 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,343 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,343 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,344 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,344 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,344 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,344 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,345 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 15/30:
+2025-11-11 09:40:05,345 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,345 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,345 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,345 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,345 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,346 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,346 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,346 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,346 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,347 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 16/30:
+2025-11-11 09:40:05,347 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,347 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,347 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,348 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,348 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,348 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,348 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,348 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,348 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,349 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 17/30:
+2025-11-11 09:40:05,349 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,350 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,350 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,350 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,350 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,350 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,350 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,350 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,351 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,351 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 18/30:
+2025-11-11 09:40:05,352 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,352 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,352 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,352 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,352 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,352 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,353 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,353 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,353 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,354 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 19/30:
+2025-11-11 09:40:05,354 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,354 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,354 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,354 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,355 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,355 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,355 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,355 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,355 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,356 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 20/30:
+2025-11-11 09:40:05,356 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,356 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,356 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,357 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,357 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,357 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,357 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,357 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,357 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,358 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 21/30:
+2025-11-11 09:40:05,358 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,358 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,358 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,358 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,359 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,359 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,359 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,359 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,359 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,360 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 22/30:
+2025-11-11 09:40:05,360 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,360 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,360 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,360 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,361 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,361 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,361 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,361 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,361 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,362 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 23/30:
+2025-11-11 09:40:05,362 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,362 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,362 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,363 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,363 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,363 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,363 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,363 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,363 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,364 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 24/30:
+2025-11-11 09:40:05,364 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,365 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,365 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,365 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,365 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,365 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,365 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,365 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,365 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,366 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 25/30:
+2025-11-11 09:40:05,366 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,366 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,367 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,367 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,367 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,367 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,367 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,367 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,367 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,368 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 26/30:
+2025-11-11 09:40:05,368 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,368 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,369 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,369 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,369 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,369 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,369 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,369 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,370 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,370 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 27/30:
+2025-11-11 09:40:05,371 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,371 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,371 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,371 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,371 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,371 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,371 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,372 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,372 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,372 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 28/30:
+2025-11-11 09:40:05,373 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,373 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,373 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,373 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,373 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,373 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,373 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,374 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,374 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,375 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 29/30:
+2025-11-11 09:40:05,375 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,375 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,375 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,375 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,375 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,375 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,375 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,375 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,377 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:05,377 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+📊 Sample 30/30:
+2025-11-11 09:40:05,378 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    First Correct: False
+2025-11-11 09:40:05,378 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Correct: False
+2025-11-11 09:40:05,378 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current First Accuracy: 0.0000
+2025-11-11 09:40:05,378 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Final Accuracy: 0.0000
+2025-11-11 09:40:05,378 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Dialogue Round: 0.0000
+2025-11-11 09:40:05,378 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Parallel Thinking Count: 0.0000
+2025-11-11 09:40:05,378 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Thinking Paths Count: 0.0000
+2025-11-11 09:40:05,379 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Current Avg Leaked Answer: 0.0
+2025-11-11 09:40:05,379 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 🧠 内存统计 - 学生: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}, 教师: {'enabled': True, 'total_turns': 1, 'conversation_history_count': 1, 'summary_history_count': 0, 'current_summary_length': 0}
+2025-11-11 09:40:13,423 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 Final Results:
+2025-11-11 09:40:13,423 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Total Samples: 30.0
+2025-11-11 09:40:13,423 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Correct Answers: 0.0
+2025-11-11 09:40:13,423 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Error Answers: 0.0
+2025-11-11 09:40:13,423 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO -    Final Accuracy: 0.0000
+2025-11-11 09:40:13,425 - D:\DeepLearning\Code\LangChain\v8\utils\evaluator.py - INFO - 
+🎯 Final Accuracy: 0.0000

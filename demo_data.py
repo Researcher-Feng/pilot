@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def process_gsm8k_data():
+def process_gsm8k_data(input_file, output_file):
     """处理GSM8k数据文件，修改两个字段的内容并保存为新文件"""
 
     def move_final_answer_to_beginning(text):
@@ -13,7 +13,9 @@ def process_gsm8k_data():
             main_content = text[:-len(target_sentence)].strip()
             # 将提示语放到开头
             return f"{solve_sentence} {target_sentence} \n\n {main_content}"
-        return text
+        else:
+            return f"{solve_sentence} {target_sentence} \n\n {text}"
+
 
     def move_final_answer_after_solve(text):
         """将结尾的提示语移动到'Solve the following problem step by step.'后面 - 用于prompt字段"""
@@ -43,10 +45,6 @@ def process_gsm8k_data():
             raw_problem = remaining_content[remaining_content.find('\nProblem: ') + len('\nProblem: '):]
             return raw_problem
         return text
-
-    # 读取原始文件
-    input_file = r'D:\DeepLearning\Code\LangChain\dataset/GSM8k_test_with_prompt2.parquet'
-    output_file = r'D:\DeepLearning\Code\LangChain\dataset/GSM8k_test_with_prompt4.parquet'
 
     print(f"正在读取文件: {input_file}")
     dataframe = pd.read_parquet(input_file)
@@ -98,6 +96,37 @@ def process_gsm8k_data():
     return dataframe
 
 
+# def process_apo_data(input_file, output_file):
+#     dataframe = pd.read_parquet(input_file)
+#     for index, row in dataframe.iterrows():
+#         # for each row, move row['prompt']['content'] to row['question']
+#         dataframe.at[index, 'question'] = row['prompt']['content']
+#         # for each row, move row['reward_model']['ground_truth'] to row['extra_info']['answer']
+#         dataframe.at[index, 'extra_info']['answer'] = row['reward_model']['ground_truth']
+#     dataframe.to_parquet(output_file, index=False)
+#     return dataframe
+
+def process_apo_data(input_file, output_file):
+    dataframe = pd.read_parquet(input_file)
+    for index, row in dataframe.iterrows():
+        # for each row, move row['prompt'][0]['content'] to row['question']
+        # (prompt is a list, so access the first item)
+        dataframe.at[index, 'question'] = row['prompt'][0]['content']
+        
+        # for each row, move row['reward_model']['ground_truth'] to row['extra_info']['answer']
+        # Need to create a copy of the dict and modify it
+        extra_info_copy = row['extra_info'].copy()
+        extra_info_copy['answer'] = row['reward_model']['ground_truth']
+        extra_info_copy['raw_problem'] = row['prompt'][0]['content']
+        dataframe.at[index, 'extra_info'] = extra_info_copy
+    
+    dataframe.to_parquet(output_file, index=False)
+    return dataframe
+
+
 # 执行处理函数
 if __name__ == "__main__":
-    processed_data = process_gsm8k_data()
+    input_file = r'D:\DeepLearning\Code\LangChain\dataset/APO_combine_with_source_test_without_path_2.parquet'
+    output_file = r'D:\DeepLearning\Code\LangChain\dataset/APO_combine_with_source_test_without_path_3.parquet'
+    processed_data = process_gsm8k_data(input_file, output_file)
+    # process_apo_data(input_file, output_file)

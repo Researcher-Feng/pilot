@@ -1,0 +1,175 @@
+2025-11-12 10:40:01,458 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - data:
+  train_batch_size: 256
+  micro_batch_size: null
+  micro_batch_size_per_gpu: 4
+  train_files: ~/data/gsm8k/train.parquet
+  val_files: D:\DeepLearning\Code\LangChain\dataset\GSM8k_test_with_prompt4.parquet
+  prompt_key: extra_info
+  response_key: extra_info
+  prompt_dict_keys:
+  - question
+  response_dict_keys:
+  - answer
+  multiturn:
+    enable: false
+    messages_key: messages
+    tools_key: tools
+    enable_thinking_key: enable_thinking
+  max_length: 1024
+  truncation: error
+  balance_dp_token: false
+  chat_template: null
+  custom_cls:
+    path: null
+    name: null
+  use_shm: false
+  raw_problem_key: extra_info
+  first_prompt: raw
+  raw_problem_dict_keys:
+  - raw_problem
+generate:
+  max_new_tokens: 1024
+model:
+  partial_pretrain: ~/models/gemma-1.1-7b-it
+  use_shm: false
+  fsdp_config:
+    model_dtype: fp32
+    wrap_policy:
+      min_num_params: 0
+    cpu_offload: false
+    offload_params: false
+  external_lib: null
+  enable_gradient_checkpointing: true
+  trust_remote_code: true
+  lora_rank: 8
+  lora_alpha: 16
+  lora_dropout=0.1: null
+  target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  use_liger: false
+  strategy: fsdp2
+  log_folder_path: D:\DeepLearning\Code\LangChain\log
+  api_name_student: gpt-3.5-turbo-0125
+  model_type_student: api
+  base_url_student: https://api.apiyi.com/v1
+  api_student_key: sk-gB3t5nNqRHAxDjXA9f5a2628AeB44aB7AeE98729B5A1D44d
+  temperature_student: 0.7
+  max_tokens_student: 4000
+  api_name_teacher: deepseek-chat
+  model_type_teacher: api
+  base_url_teacher: https://api.deepseek.com
+  api_teacher_key: sk-063cb38f7e514551a4c4e3dbbeddfe93
+  temperature_teacher: 0.2
+  max_tokens_teacher: 8000
+  api_name_expert: deepseek-chat
+  model_type_expert: api
+  base_url_expert: https://api.deepseek.com
+  api_key_expert: sk-063cb38f7e514551a4c4e3dbbeddfe93
+  temperature_expert: 0.2
+  max_tokens_expert: 8000
+  temperature_summary_model: 0
+  max_tokens_summary_model: 8000
+optim:
+  lr: 1.0e-05
+  betas:
+  - 0.9
+  - 0.95
+  weight_decay: 0.01
+  warmup_steps_ratio: 0.1
+  clip_grad: 1.0
+  lr_scheduler: cosine
+ulysses_sequence_parallel_size: 1
+use_remove_padding: false
+trainer:
+  default_local_dir: checkpoints/${trainer.project_name}/${trainer.experiment_name}
+  default_hdfs_dir: null
+  project_name: gsm8k-sft
+  experiment_name: test
+  total_epochs: 4
+  total_training_steps: null
+  logger:
+  - console
+  - wandb
+  seed: 1
+  save_freq: -1
+  test_freq: -1
+  nnodes: 2
+  n_gpus_per_node: 8
+  max_ckpt_to_keep: null
+  resume_mode: auto
+  resume_from_path: null
+  checkpoint:
+    save_contents:
+    - model
+    - optimizer
+    - extra
+    load_contents: ${trainer.checkpoint.save_contents}
+  device: cuda
+agent:
+  explicit_interaction: true
+  max_samples: 30
+  debug_samples: 10
+  debug_mode: false
+  max_turns: 5
+  use_solution_tree: true
+  evaluate_multi_solution: false
+  conversation_summary: false
+  summary_model_name: deepseek-chat
+  summary_model_type: api
+  summary_base_url: https://api.deepseek.com
+  summary_api_key: sk-063cb38f7e514551a4c4e3dbbeddfe93
+  summary_max_turns: 4
+  summary_max_tokens: 1500
+  summary_mode: per_message
+  parallel_thinking: false
+  socratic_teaching: false
+  student_sys_prompt: STUDENT_PROMPT_EASY_MISTAKE
+  teacher_response: TEACHER_RESPONSE_TEACHING
+  student_response: STUDENT_RESPONSE_STUDYING_SOLVING
+  teacher_sys_prompt: TEACHER_PROMPT_EASY
+  teacher_tree_sys_prompt: TEACHER_PROMPT_EASY
+  student_tree_sys_prompt: STUDENT_PROMPT_EASY
+  expert_sys_prompt: EXPERT_STUDENT_PROMPT
+  use_cognitive_state: false
+  carelessness_level: 9
+  math_background: beginner
+  response_style: brief
+  preferred_method: algebraic
+  learning_style: reading-writing
+
+2025-11-12 10:40:04,204 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - ✅ Expert agent initialized: deepseek-chat
+2025-11-12 10:40:05,452 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - ✅ 对话摘要功能已禁用
+2025-11-12 10:40:05,452 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - ✅ Multi-agent system initialized successfully!
+2025-11-12 10:40:05,452 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO -    Student: gpt-3.5-turbo-0125
+2025-11-12 10:40:05,452 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO -    Teacher: deepseek-chat
+2025-11-12 10:40:05,452 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO -    Expert: Enabled
+2025-11-12 10:40:05,452 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO -    Cognitive State: Disabled
+2025-11-12 10:40:05,452 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO -    Solution Tree: Enabled
+2025-11-12 10:40:05,452 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO -    Mode: Explicit Interaction
+2025-11-12 10:40:05,452 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO -    Parallel Thinking: False
+2025-11-12 10:40:05,452 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO -    Socratic Teaching: False
+2025-11-12 10:40:49,936 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - 🌳 Generated solution tree by expert.
+2025-11-12 10:40:49,940 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - 
+🎯 开始解题: Solve the following problem step by step. Put your final answer within the \boxed{} command. 
+
+ Janet’s ducks lay 16 eggs per day. She eats three for breakfast every morning and bakes muffins for her friends every day with four. She sells the remainder at the farmers' market daily for $2 per fresh duck egg. How much in dollars does she make every day at the farmers' market?
+2025-11-12 10:40:49,942 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - ==================================================
+2025-11-12 10:41:03,670 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - 📝 已记录学生第一次解题步骤
+2025-11-12 10:41:03,985 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - 👨‍🎓 学生 [轮次1]: 1. Find the total number of eggs Janet's ducks lay per day: 16 eggs/day
+2. Find how many eggs she uses for breakfast: 3 eggs
+3. Find how many eggs she uses for baking muffins: 4 eggs
+4. Calculate the total number of eggs she uses: 3 eggs + 4 eggs = 7 eggs
+5. Find the remaining eggs that she sells: 16 eggs - 7 eggs = 9 eggs
+6. Calculate the total amount she makes daily: 9 eggs * $2/egg = $18
+
+\boxed{Janet makes $18 every day at the farmers' market.}
+2025-11-12 10:41:06,065 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - 🎉 学生得出正确答案!
+2025-11-12 10:41:08,523 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - ✅ 学生答对了，解题路径已完成
+2025-11-12 10:41:08,701 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - 🌳 解题树统计:
+2025-11-12 10:41:08,701 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO -    专家路径数: 3
+2025-11-12 10:41:08,703 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO -    学生路径数: 1
+2025-11-12 10:41:09,716 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - 🌳 Visualizing Expert Tree:
+2025-11-12 10:41:43,900 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - Generated expert_tree_0.png
+2025-11-12 10:41:43,900 - D:\DeepLearning\Code\LangChain\v9\utils\evaluator.py - INFO - 🌳 Visualizing Student Tree:
